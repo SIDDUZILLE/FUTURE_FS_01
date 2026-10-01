@@ -1,8 +1,17 @@
-# Ignore heavy reference screenshot
-assets/images/reference-hero.png
-assets/images/reference.png
-
-# Logs and temp files
-*.log
+# Operating System files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Large raw screenshots
+assets/images/reference-hero.png
+
+# Node / Cache
+node_modules/
+npm-debug.log*
+.npm/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
