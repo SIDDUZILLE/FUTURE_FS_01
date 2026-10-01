@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff &amp; Admin Dashboard | 101 Café and Farm</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    body {
+      background-color: #161b17;
+      color: #e5e8e5;
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .admin-header {
+      background: #111512;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .admin-brand h1 {
+      font-family: var(--font-serif-heading);
+      font-size: 1.4rem;
+      color: #ffffff;
+      margin: 0;
+    }
+    .admin-badge {
+      background: var(--color-accent-gold);
+      color: #111512;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 3px;
+    }
+    .btn-return-site {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn-return-site:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+    .admin-container {
+      max-width: 1380px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      width: 100%;
+      flex-grow: 1;
+    }
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .metric-card {
+      background: #1c221e;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 1.6rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    .metric-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #8c948e;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .metric-value {
+      font-family: var(--font-serif-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 2rem;
+    }
+    @media (max-width: 980px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+    .panel-card {
+      background: #1c221e;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+    }
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4rem;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .panel-title {
+      font-family: var(--font-serif-heading);
+      font-size: 1.25rem;
+      color: #ffffff;
+    }
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .data-table th {
+      text-align: left;
+      padding: 0.8rem 1rem;
+      color: #8c948e;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 30px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .status-confirmed { background: rgba(56, 176, 0, 0.15); color: #38b000; border: 1px solid rgba(56, 176, 0, 0.3); }
+    .status-pending { background: rgba(200, 150, 62, 0.15); color: var(--color-accent-gold); border: 1px solid var(--border-gold); }
+    .action-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.72rem;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .action-btn:hover {
+      background: #ffffff;
+      color: #111;
+    }
+    .action-btn.danger:hover {
+      background: #e63946;
+      border-color: #e63946;
+      color: #ffffff;
+    }
+    .control-group {
+      margin-bottom: 1.4rem;
+    }
+    .control-label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #b0b8b2;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+    .control-input {
+      width: 100%;
+      background: #141815;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.88rem;
+    }
+    .control-input:focus {
+      outline: none;
+      border-color: var(--color-accent-gold);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="admin-header">
+    <div class="admin-brand">
+      <img src="assets/images/acorn-logo.svg" alt="101 Acorn" style="width: 32px; height: 32px;">
+      <h1>101 CAFÉ &amp; FARM</h1>
+      <span class="admin-badge">Staff &amp; Operations Portal</span>
+    </div>
+    <a href="index.html" class="btn-return-site">
+      &larr; View Live Website
+    </a>
+  </header>
+
+  <main class="admin-container">
+    
+    <!-- Top KPI Metrics -->
+    <section class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-label">Today's Reservations</div>
+        <div class="metric-value" id="kpi-reservations">4 Tables</div>
+        <small style="color: #38b000; font-size: 0.8rem;">+2 new bookings today</small>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Active Orders</div>
+        <div class="metric-value" id="kpi-orders">3 Orders</div>
+        <small style="color: var(--color-accent-gold); font-size: 0.8rem;">2 Kitchen • 1 Pantry Prep</small>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Today's Farm Sales</div>
+        <div class="metric-value" id="kpi-revenue">$482.00</div>
+        <small style="color: #38b000; font-size: 0.8rem;">Online &amp; Table orders</small>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">Cafe Service Status</div>
+        <div class="metric-value" style="color: #38b000; font-size: 1.8rem;" id="kpi-status">LIVE • OPEN</div>
+        <small style="color: #aaa; font-size: 0.8rem;">Dinner &amp; Solarium Service</small>
+      </div>
+    </section>
+
+    <!-- Main Tables Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Left Column: Reservations & Orders -->
+      <div>
+        
+        <!-- Live Reservations Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2 class="panel-title">Guest Table Reservations</h2>
+            <button class="action-btn" onclick="seedSampleReservation()">+ Test Booking</button>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Guest Name</th>
+                  <th>Party</th>
+                  <th>Date &amp; Time</th>
+                  <th>Seating</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reservations-table-body">
+                <!-- Populated dynamically from localStorage -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Online Orders Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2 class="panel-title">Online Farm &amp; Pantry Orders</h2>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Items</th>
+                  <th>Amount</th>
+                  <th>Type</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Quick Management & Controls -->
+      <div>
+        
+        <!-- Live Website Controls -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2 class="panel-title">Live Site Controls</h2>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="setting-status">Operating Status Override</label>
+            <select id="setting-status" class="control-input" onchange="updateLiveStatusSetting()">
+              <option value="auto">Automatic (Follows Schedule)</option>
+              <option value="open">Force OPEN (Special Event)</option>
+              <option value="closed">Force CLOSED (Private Buyout / Holiday)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label class="control-label" for="setting-harvest">Today's Harvest Ticker Text</label>
+            <input type="text" id="setting-harvest" class="control-input" value="Wild Spring Ramps • Rainbow Heritage Carrots • Borage Blossoms • Purple Romanesco • Greenhouse Chervil">
+          </div>
+
+          <button class="action-btn" style="background: var(--color-accent-gold); color: #111; font-weight: 700; width: 100%; padding: 0.8rem;" onclick="saveHarvestSetting()">
+            Publish Updates to Live Site
+          </button>
+        </div>
+
+        <!-- Quick Contacts -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <h2 class="panel-title">Staff Quick Links</h2>
+          </div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.88rem;">
+            <li>📞 <strong style="color:#fff;">Kitchen Line:</strong> (864) 555-0193</li>
+            <li>🌾 <strong style="color:#fff;">Farm Manager:</strong> Silas Ward (ext. 4)</li>
+            <li>💌 <strong style="color:#fff;">Inquiries Inbox:</strong> hospitality@101cafe.com</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Notification Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // Load Reservations from LocalStorage
+    let reservations = JSON.parse(localStorage.getItem('101_reservations')) || [
+      { id: 'RES-892', name: 'Eleanor Vance', guests: '2 Guests', date: '2026-10-02', time: '6:30 PM', seating: 'Greenhouse Solarium', status: 'Confirmed' },
+      { id: 'RES-893', name: 'Marcus Sterling', guests: '4 Guests', date: '2026-10-02', time: '7:00 PM', seating: 'Homestead Dining Room', status: 'Confirmed' },
+      { id: 'RES-894', name: 'Dr. Clara Thorne', guests: '2 Guests', date: '2026-10-03', time: '5:30 PM', seating: 'Garden Pergola Patio', status: 'Pending' }
+    ];
+
+    let orders = JSON.parse(localStorage.getItem('101_orders')) || [
+      { id: '#101-441', items: '1x 101 Wildflower Honey, 1x Heritage Sourdough', total: '$27.00', type: 'Curbside Pickup', status: 'Ready for Pickup' },
+      { id: '#101-442', items: '2x 101 Chilled Velouté, 1x Tartine', total: '$50.00', type: 'Kitchen Order', status: 'Preparing' },
+      { id: '#101-443', items: '1x Pickled Farm Ramps', total: '$12.00', type: 'Pantry Store', status: 'Pending' }
+    ];
+
+    function renderDashboard() {
+      // Reservations
+      const resBody = document.getElementById('reservations-table-body');
+      resBody.innerHTML = reservations.map((r, i) => `
+        <tr>
+          <td><strong>${r.name}</strong></td>
+          <td>${r.guests}</td>
+          <td>${r.date} @ ${r.time}</td>
+          <td>${r.seating}</td>
+          <td><span class="status-badge ${r.status === 'Confirmed' ? 'status-confirmed' : 'status-pending'}">${r.status}</span></td>
+          <td>
+            <button class="action-btn" onclick="toggleResStatus(${i})">${r.status === 'Confirmed' ? 'Seat' : 'Confirm'}</button>
+            <button class="action-btn danger" onclick="deleteRes(${i})">&times;</button>
+          </td>
+        </tr>
+      `).join('');
+
+      // Orders
+      const orderBody = document.getElementById('orders-table-body');
+      orderBody.innerHTML = orders.map((o, i) => `
+        <tr>
+          <td><strong>${o.id}</strong></td>
+          <td>${o.items}</td>
+          <td><strong>${o.total}</strong></td>
+          <td>${o.type}</td>
+          <td><span class="status-badge ${o.status === 'Ready for Pickup' ? 'status-confirmed' : 'status-pending'}">${o.status}</span></td>
+          <td>
+            <button class="action-btn" onclick="toggleOrderStatus(${i})">Advance</button>
+          </td>
+        </tr>
+      `).join('');
+
+      document.getElementById('kpi-reservations').textContent = `${reservations.length} Tables`;
+      document.getElementById('kpi-orders').textContent = `${orders.length} Orders`;
+    }
+
+    function toggleResStatus(index) {
+      if (reservations[index].status === 'Pending') reservations[index].status = 'Confirmed';
+      else if (reservations[index].status === 'Confirmed') reservations[index].status = 'Seated';
+      localStorage.setItem('101_reservations', JSON.stringify(reservations));
+      renderDashboard();
+    }
+
+    function deleteRes(index) {
+      reservations.splice(index, 1);
+      localStorage.setItem('101_reservations', JSON.stringify(reservations));
+      renderDashboard();
+    }
+
+    function toggleOrderStatus(index) {
+      if (orders[index].status === 'Pending') orders[index].status = 'Preparing';
+      else if (orders[index].status === 'Preparing') orders[index].status = 'Ready for Pickup';
+      else if (orders[index].status === 'Ready for Pickup') orders[index].status = 'Completed';
+      localStorage.setItem('101_orders', JSON.stringify(orders));
+      renderDashboard();
+    }
+
+    function seedSampleReservation() {
+      reservations.unshift({
+        id: `RES-${Math.floor(100 + Math.random() * 900)}`,
+        name: 'James Oliver',
+        guests: '2 Guests',
+        date: '2026-10-04',
+        time: '7:30 PM',
+        seating: 'Greenhouse Solarium',
+        status: 'Pending'
+      });
+      localStorage.setItem('101_reservations', JSON.stringify(reservations));
+      renderDashboard();
+    }
+
+    function saveHarvestSetting() {
+      const text = document.getElementById('setting-harvest').value;
+      localStorage.setItem('101_harvest_ticker', text);
+      alert('Updated harvest ticker! Any visitor to the live website will see this updated harvest list.');
+    }
+
+    function updateLiveStatusSetting() {
+      const val = document.getElementById('setting-status').value;
+      localStorage.setItem('101_status_override', val);
+      alert(`Status set to: ${val}`);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderDashboard();
+      const savedTicker = localStorage.getItem('101_harvest_ticker');
+      if (savedTicker) document.getElementById('setting-harvest').value = savedTicker;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Ignore heavy reference screenshot
+assets/images/reference-hero.png
+assets/images/reference.png
+
+# Logs and temp files
+*.log
+.DS_Store
+Thumbs.db
